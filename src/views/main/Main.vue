@@ -10,10 +10,18 @@
         </transition>
       </div>
     </div>
-    <div class="main">
-      <div class="list-message">
-        <message></message>
-      </div>
+    <div class="chat-window-container">
+      <el-container>
+        <el-header>
+          <chat-header/>
+        </el-header>
+        <el-main>
+          <chat-center></chat-center>
+        </el-main>
+        <el-footer>
+          <chat-footer/>
+        </el-footer>
+      </el-container>
     </div>
   </div>
 </template>
@@ -21,6 +29,9 @@
 <script setup lang="ts">
 import Navigation from "@/components/Navigation.vue";
 import Message from "@/components/Message.vue";
+import ChatHeader from "@/components/chatwindow/header/chat-header.vue";
+import ChatCenter from "@/components/chatwindow/center/chat-center.vue";
+import ChatFooter from "@/components/chatwindow/footer/chat-footer.vue";
 </script>
 
 <style lang="less" scoped>
@@ -68,10 +79,20 @@ import Message from "@/components/Message.vue";
     transition: opacity 0.4s ease-out;
   }
 
-  .main {
-    width: 100%;
-    display: flex;
+  .chat-window-container {
+    flex: 1;
+    :deep(.el-header ) {
+      padding: 20px 0;
+    }
     flex-direction: row;
+    background-color: var(--white-color);
+    .el-header{
+      box-shadow:0px 1px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+      padding: 0;
+    }
+    .el-main{
+      padding-right: 30px;
+    }
   }
 }
 
