@@ -21,20 +21,18 @@ import {LOGIN_TOKEN} from "@/global/constants";
 
 class HYRequest {
 	instance: AxiosInstance
-
-
 	// request实例 => axios的实例
 	constructor(config: HYRequestConfig) {
 		this.instance = axios.create(config)
-
 		// 每个instance实例都添加拦截器
+		// 请求拦截器
 		this.instance.interceptors.request.use(config => {
 			// loading/token
 			return config
 		}, err => {
-
 			return err
 		})
+		// 响应拦截器
 		this.instance.interceptors.response.use(res => {
 			return res.data
 		}, err => {

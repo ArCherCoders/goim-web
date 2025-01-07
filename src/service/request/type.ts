@@ -11,8 +11,5 @@ export interface HYInterceptors<T = AxiosResponse> {
 
 export interface HYRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
 	interceptors?: HYInterceptors<T>
-
 	[porpre: string]: any
-
-
 }
