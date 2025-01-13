@@ -26,10 +26,8 @@
   </div>
 </template>
 <script setup lang="ts">
+import {defineProps, nextTick, watch,ref} from 'vue';
 import {type GoImMessage} from "@/type/index"
-import {defineProps, nextTick, type PropType, watch} from 'vue';
-import {ref} from "vue";
-import {GoImClient} from "@/goim-web-sdk/goImClient";
 import {ElScrollbar} from "element-plus";
 
 interface Props {
@@ -46,19 +44,16 @@ function addMessage(content: GoImMessage) {
 
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
 const innerRef = ref()
-
-
 const scrollToBottom = () => {
   if (scrollbarRef.value && innerRef.value) {
     scrollbarRef.value.setScrollTop(innerRef.value.clientHeight)
   }
 }
-
-  watch(props.messages, () => {
-    nextTick(() => {
-      scrollToBottom()
-    })
+watch(props.messages, () => {
+  nextTick(() => {
+    scrollToBottom()
   })
+})
 
 
 // let value: GoImMessage = {
@@ -102,9 +97,10 @@ const scrollToBottom = () => {
         padding: 6px 9px 3px;
         font-size: 14px;
         line-height: 16px;
-        p{
+
+        p {
           white-space: pre-line;
-          word-break:break-all;
+          word-break: break-all;
         }
 
       }
