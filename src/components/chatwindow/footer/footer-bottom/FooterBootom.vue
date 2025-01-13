@@ -1,10 +1,17 @@
 <template>
   <div class="footer-bottom-container">
     <div class="footer-icon-button"></div>
-    <el-button type="primary">Primary</el-button>
+    <el-button type="primary" @click="sendMessageBtnClick">Primary</el-button>
   </div>
 </template>
 <script setup lang="ts">
+//点击按钮发送消息 发出事件
+const emits =defineEmits(['sendMessageBtnClick'])
+function sendMessageBtnClick(){
+  emits("sendMessageBtnClick")
+}
+
+
 
 </script>
 <style scoped lang="less">

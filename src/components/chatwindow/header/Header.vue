@@ -6,10 +6,10 @@
       <!--       头部信息-->
       <div class="header-info">
         <div class="header-image">
-          <el-avatar src="https://img2.baidu.com/it/u=1957919228,508545798&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800"></el-avatar>
+          <el-avatar :src="props.avatar"></el-avatar>
         </div>
         <div class="header-text">
-          <span>coder why</span>
+          <span>{{props.name}}</span>
         </div>
       </div>
       <!--       头部ICo-->
@@ -22,6 +22,17 @@
   </div>
 </template>
 <script setup lang="ts">
+
+const props =defineProps({
+  avatar:{
+    type:String,
+    default:""
+  },
+  name:{
+    type:String,
+    default:""
+  }
+})
 
 </script>
 <style scoped lang="less">

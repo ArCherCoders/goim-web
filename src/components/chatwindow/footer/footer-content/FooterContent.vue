@@ -7,20 +7,32 @@
 </template>
 <script setup lang="ts">
 import {computed, ref} from "vue";
-const content =ref("")
+
+const content = ref("")
 const props = defineProps({
-  message: {
+  textAreaMessage: {
     type: String,
     default: ""
   }
 })
-const textarea=ref()
+const textarea = ref()
 
-defineExpose({changeContent})
+// 对外暴露方法：添加内容 获取内容 清除内容
+defineExpose({changeContent, getContent, clearContent})
 
-function changeContent(data:any){
+//  添加内容
+function changeContent(data: any) {
   textarea.value.focus()
-  textarea.value.value+=data
+  textarea.value.value += data
+}
+
+// 获取内容
+function getContent() {
+  return textarea.value.value
+}
+
+function clearContent() {
+  textarea.value.value = ""
 }
 
 
