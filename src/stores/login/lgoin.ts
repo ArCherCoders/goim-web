@@ -1,5 +1,7 @@
 import {defineStore} from "pinia";
 import {LoginRequest} from "@/service/login";
+import useMessageStore from "@/stores/message/message";
+import {localCache} from "@/utils/cache";
 
 
 interface UserInfo {
@@ -12,15 +14,7 @@ interface UserInfo {
 
 const useLoginStore = defineStore("login", {
     state: () => ({
-        userInfo: {
-            userId: 0,
-            userAccount: "",
-            userKey: "",
-            userName: "",
-            userPic: "",
-            userOnline: 0,
-            token: ""
-        }
+        userInfo: JSON.parse(localCache.getCache("userInfo") ?? null)
     }),
     getters: {},
     actions: {
@@ -28,13 +22,10 @@ const useLoginStore = defineStore("login", {
             const res = await LoginRequest(userAccount, userPassword)
             console.log(Number(res.code))
             if (Number(res.code) > 0) {
-                this.userInfo.userId = res.data.userId
-                this.userInfo.userAccount = res.data.userAccount
-                this.userInfo.userName = res.data.userName
-                this.userInfo.userPic = res.data.userPic
-                this.userInfo.userOnline = res.data.userOnline
-                this.userInfo.userKey = res.data.userKey
-                this.userInfo.token = res.data.token
+                this.userInfo = res.data
+                localCache.setCache("userInfo", JSON.stringify(this.userInfo))
+                const messageStore = useMessageStore();
+                messageStore.connectAction();
             }
             return new Promise((resolve, reject) => {
                 if (Number(res.code) > 0) {

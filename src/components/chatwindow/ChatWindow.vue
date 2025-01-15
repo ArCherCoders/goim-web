@@ -12,10 +12,12 @@
 <script setup lang="ts">
 import {cssThemeVars, defaultThemeStyles} from "@/themes/index.js"
 import {type GoImMessage,} from "@/type/index"
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import Header from "@/components/chatwindow/header/Header.vue";
 import Footer from "@/components/chatwindow/footer/Footer.vue";
 import Content from "@/components/chatwindow/content/Content.vue";
+import useMessageStore from "@/stores/message/message";
+import {storeToRefs} from "pinia";
 
 const height = ref("800px")
 const cssVars = computed(() => {
@@ -30,7 +32,8 @@ const cssVars = computed(() => {
 })
 // 获取content组件实例
 const contentRef = ref()
-const messages = ref<GoImMessage[]>([])
+const messageStore = useMessageStore()
+const {messages} = storeToRefs(messageStore)
 
 const topicName = ref("codery");
 const topicPic = ref("https://img2.baidu.com/it/u=1957919228,508545798&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800")

@@ -12,8 +12,8 @@ type ReceiveHeartbeatReplyFunc = () => void
 type ReceiveMessageFunc = (data: any) => void
 
 // 配置对象
-export interface GoImConfig{
-    url:string,
+export interface GoImConfig {
+    url: string,
     auth: AuthInterface,
     receiveHeartbeatReplyFuncCallBack: ReceiveHeartbeatReplyFunc,
     receiveMessageFuncCallBack: ReceiveMessageFunc,
@@ -21,11 +21,13 @@ export interface GoImConfig{
 }
 
 // var token = '{"mid":123, "room_id":"live://1000", "platform":"web", "accepts":[1000,1001,1002]}'
-type platForm="web" | "android" | "ios"
+type platForm = "web" | "android" | "ios"
+
 export interface AuthInterface {
     mid: number
     room_id: string
     platform: platForm
+    key: string
     accepts: number[]
 }
 
@@ -43,13 +45,13 @@ export class GoImClient {
     receiveHeartbeatReplyFunc: ReceiveHeartbeatReplyFunc
     receiveMessageFunc: ReceiveMessageFunc
 
-    constructor(config:GoImConfig) {
+    constructor(config: GoImConfig) {
         this.url = config.url
         this.token = JSON.stringify(config.auth)
         this.authReplyOkFunc = config.authReplyOkFuncCallBack// 认证成功的回调
         this.receiveHeartbeatReplyFunc = config.receiveHeartbeatReplyFuncCallBack// 接收服务端的心跳回应
         this.ws = new WebSocket(this.url)
-        this.receiveMessageFunc=config.receiveMessageFuncCallBack
+        this.receiveMessageFunc = config.receiveMessageFuncCallBack
         this.createConnect(this._MAX_CONNECT_TIMES, this._DELAY)
     }
 
@@ -60,7 +62,7 @@ export class GoImClient {
         this.create()
     }
 
-    onopen = ():void => {
+    onopen = (): void => {
         console.log("打开连接")
         this.Auth(this.token, this.textDecoder, this.textEncoder)
     }
@@ -89,7 +91,7 @@ export class GoImClient {
             case 9:
                 // batch message
                 for (let offset = rawHeaderLen; offset < data.byteLength; offset += packetLen) {
-                     packetLen = dataView.getInt32(offset);
+                    packetLen = dataView.getInt32(offset);
                     let headerLen = dataView.getInt16(offset + headerOffset);
                     let ver = dataView.getInt16(offset + verOffset);
                     let op = dataView.getInt32(offset + opOffset);
@@ -113,7 +115,7 @@ export class GoImClient {
         //  重拾连接最大次数之后关闭连接
     }
 
-    reConnect=()=> {
+    reConnect = () => {
         this.createConnect(--this._MAX_CONNECT_TIMES, this._DELAY * 2);
     }
 
@@ -125,7 +127,7 @@ export class GoImClient {
         this.ws.onclose = this.onclose
     }
 
-    destroy(){
+    destroy() {
         console.log("wesocket 实例销毁")
         this.ws.close()
     }
@@ -152,6 +154,7 @@ export class GoImClient {
         res.set(u82, ab1.byteLength);
         return res.buffer;
     }
+
     messageReceived(ver: number, body: any) {
         // console.log("messageReceived:", "ver=" + ver, "body=" + body);
         this.receiveMessageFunc(body)
