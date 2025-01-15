@@ -4,7 +4,7 @@
     <el-scrollbar wrap-style="height: 600px" always ref="scrollbarRef">
 
       <div ref="innerRef">
-
+        <!--        消息列表开始-->
         <transition-group tag="div" name="list" appear ref="innerRef">
           <template v-for="(item,index) in props.messages" :key="index">
             <div class="message-box " :class="{'me-message':item.uid==456}">
@@ -42,6 +42,7 @@ function addMessage(content: GoImMessage) {
 
 }
 
+//  设置滚动条开始 当出现滚动条时 没发送一条消息 滚动条始终再底部
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
 const innerRef = ref()
 const scrollToBottom = () => {
@@ -54,24 +55,13 @@ watch(props.messages, () => {
     scrollToBottom()
   })
 })
-
-
-// let value: GoImMessage = {
-//   avatar: "https://img2.baidu.com/it/u=1957919228,508545798&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800",
-//   name: "coder",
-//   uid: 456,
-//   messageId: 1234,
-//   content: "你好 那就百 度发生大法师卡德加 看深刻搭 街坊开始大幅 多看书看风景卢 卡斯的 ffdgd dsfdsfsdf",
-//   topicId: 1234,// 可以是roomId
-// }
-
+//  设置滚动条结束当出现滚动条时 没发送一条消息 滚动条始终再底部
 
 </script>
 <style scoped lang="less">
 .content-container {
   height: 600px;
   padding: 0px 10px;
-
 
   .message-box {
     display: flex;

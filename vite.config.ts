@@ -13,6 +13,16 @@ import {
 } from 'vite-plugin-style-import'
 // https://vitejs.dev/config/
 export default defineConfig({
+  server:{
+    proxy:{
+      '/app':{
+        target: 'localhost:8089',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/app/, '/app'),
+      }
+    }
+  },
+
   plugins: [
     vue(),
     AutoImport({

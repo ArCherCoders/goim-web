@@ -6,10 +6,10 @@
       <!--       头部信息-->
       <div class="header-info">
         <div class="header-image">
-          <el-avatar :src="props.avatar"></el-avatar>
+          <el-avatar :src="props.topicPic"></el-avatar>
         </div>
         <div class="header-text">
-          <span>{{props.name}}</span>
+          <span>{{props.topicName}}</span>
         </div>
       </div>
       <!--       头部ICo-->
@@ -24,11 +24,11 @@
 <script setup lang="ts">
 
 const props =defineProps({
-  avatar:{
+  topicPic:{
     type:String,
     default:""
   },
-  name:{
+  topicName:{
     type:String,
     default:""
   }
