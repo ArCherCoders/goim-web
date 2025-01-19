@@ -1,14 +1,15 @@
 import {defineStore} from "pinia";
 import useLoginStore from "@/stores/login/lgoin";
 import {type AuthInterface, GoImClient} from "@/goim-web-sdk/goImClient";
+import type {GoImMessage} from "@/type";
 
-interface MessageState {
-    message: any,
+interface MessageState<T> {
+    messages: T[],
     client: GoImClient
 }
 
 const useMessageStore = defineStore("message", {
-    state: (): MessageState => ({
+    state: (): MessageState<GoImMessage> => ({
         messages: [],
         client: null,
     }),
@@ -20,27 +21,23 @@ const useMessageStore = defineStore("message", {
             console.log("接收心跳")
         }
         ,
-        receieveMessageFunc(data: any) {
-            console.log("******************", this)
-            console.log("接收消息=", data)
-            console.log("接收消息=", JSON.parse(data))
+        receiveMessageFunc(data: any) {
             const receiveData = JSON.parse(data)
-            let message ={
-                uid:receiveData.fromUserId,
-                name:receiveData.fromUserName,
+            let message: GoImMessage = {
+                uid: receiveData.fromUserId,
+                name: receiveData.fromUserName,
                 avatar: receiveData.fromUserPic,
-                messageId:receiveData.messageId,
-                content:receiveData.messageContent,
+                messageId: receiveData.messageId,
+                content: receiveData.messageContent,
             }
             this.messages.push(message)
         },
         connectAction() {
             const loginStore = useLoginStore();
-            let userInfo = loginStore.userInfo;
+            let userInfo: any = loginStore.userInfo;
             if (userInfo === null) {
                 return
             }
-            console.log(userInfo)
             let auth: AuthInterface = {
                 mid: userInfo.userId,
                 room_id: "199",
@@ -48,16 +45,14 @@ const useMessageStore = defineStore("message", {
                 key: userInfo.userKey,
                 accepts: [1000, 1002, 1003]
             }
-            console.log(this)
-            let goImClient = new GoImClient({
-                    url: "ws://192.168.10.200:3102/sub",
+            this.client = new GoImClient({
+                    url: import.meta.env.VITE_WS_BASE_URL,
                     auth: auth,
                     receiveHeartbeatReplyFuncCallBack: () => this.receiveHeartbeatReplyFunc(),
-                    receiveMessageFuncCallBack: (data: any) => this.receieveMessageFunc(data),
+                    receiveMessageFuncCallBack: (data: any) => this.receiveMessageFunc(data),
                     authReplyOkFuncCallBack: () => this.authReplyOkFunc(),
                 }
             )
-            this.client = goImClient;
         }
         ,
         disConnectActon() {

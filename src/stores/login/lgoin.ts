@@ -4,14 +4,6 @@ import useMessageStore from "@/stores/message/message";
 import {localCache} from "@/utils/cache";
 
 
-interface UserInfo {
-    userName: string
-    userPic: string
-    userId: number
-    token: string
-    online: number
-}
-
 const useLoginStore = defineStore("login", {
     state: () => ({
         userInfo: JSON.parse(localCache.getCache("userInfo") ?? null)

@@ -56,8 +56,9 @@ function sendMessageClicke(data: string) {
 </script>
 <style scoped lang="less">
 .im-window-container {
-  width: 900px;
-  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  //margin: 0 auto;
   color: var(--chat-color);
   background: var(--chat-content-bg-color);
   border: var(--chat-container-border);

@@ -43,7 +43,10 @@ declare module 'vue' {
     Navigation: typeof import('./src/components/Navigation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Sessionlist: typeof import('./src/components/session/Sessionlist.vue')['default']
+    SessionList: typeof import('./src/components/session/SessionList.vue')['default']
     SideBar: typeof import('./src/components/sideBar.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon/SvgIcon.vue')['default']
+    TabControl: typeof import('./src/components/tabControl/tabControl.vue')['default']
   }
 }
